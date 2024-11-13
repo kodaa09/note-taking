@@ -1,18 +1,18 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'users'
+  protected tableName = 'note_tags'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
 
-      table.string('full_name').nullable()
-      table.string('email', 254).notNullable().unique()
-      table.string('password').notNullable()
+      table.integer('note_id').unsigned().references('notes.id')
+      table.integer('tag_id').unsigned().references('tags.id')
+      table.unique(['note_id', 'tag_id'])
 
-      table.timestamp('created_at').notNullable()
-      table.timestamp('updated_at').nullable()
+      table.timestamp('created_at')
+      table.timestamp('updated_at')
     })
   }
 
