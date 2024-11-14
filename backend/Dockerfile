@@ -6,5 +6,6 @@ RUN yarn install
 RUN node ace build --ignore-ts-errors
 WORKDIR /app/build
 RUN yarn install --production
+COPY .env .env
 EXPOSE 3333
 CMD ["node", "./bin/server.js"]
