@@ -37,18 +37,12 @@ export default class UsersController {
 
   async me({ auth, response }: HttpContext) {
     try {
-      const isAuthenticated = await auth.use('web').check()
-
-      if (isAuthenticated) {
-        const user = auth.use('web').user
-        if (!user) return response.status(200).send({ error: 'Non authentifié' })
-
-        await user.load('address')
-        return response.status(200).send(user)
-      } else {
+      const user = await auth.use('web').authenticate()
+      return response.status(200).send(user)
+    } catch (error) {
+      if (error.name === 'E_UNAUTHORIZED_ACCESS') {
         return response.status(401).send({ error: 'Non authentifié' })
       }
-    } catch (error) {
       return response.status(500).send({ error: 'Erreur interne du serveur' })
     }
   }

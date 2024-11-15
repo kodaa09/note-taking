@@ -11,6 +11,7 @@ const schema = z.object({
 type Schema = z.output<typeof schema>
 
 const authStore = useAuth();
+const useUser = useUsers();
 
 const isLoginForm = ref(true);
 const state = reactive({
@@ -20,14 +21,17 @@ const state = reactive({
 
 async function onAuthForm(event: FormSubmitEvent<Schema>) {
   if (isLoginForm.value) {
-    try {
-    // await authStore.authenticate(state.email, state.password)
-    } catch (error) {
-      console.log(error)
+    if (state.email && state.password) {
+      try {
+        await authStore.authenticate(state.email, state.password)
+      } catch (error) {
+        console.log(error)
+      }
     }
   } else {
     try {
-    // await authStore.signup(state.email, state.password)
+      if (state.email && state.password)
+        await useUser.signUp(state.email, state.password)
     } catch (error) {
       console.log(error)
     }
@@ -65,9 +69,10 @@ function resetForm() {
       </UFormGroup>
 
       <UButton class="py-3" block type="submit">
-        Sign up
+        {{ isLoginForm ? 'Login' : 'Sign up' }}
       </UButton>
     </UForm>
+    <ErrorMessage class="mt-3 mb-4" :message="authStore.loginError"/>
     <div>
       <UDivider class="mb-4" />
       <UButton class="flex mx-auto" @click="onChangeForm" color="gray" :padded="false" variant="link">
