@@ -2,5 +2,7 @@
 </script>
 
 <template>
-  toto
+  <div class="h-full flex items-center justify-center">
+    <AuthForm />
+  </div>
 </template>

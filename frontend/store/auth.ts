@@ -1,16 +1,15 @@
 import { defineStore } from "pinia";
 import type { Ref } from "vue";
-import type { authResponse } from "~/interfaces/auth.js";
+import type { AuthResponse } from "~/interfaces/auth.js";
 
 export const useAuth = defineStore("auth", () => {
   const config = useRuntimeConfig();
-
-  const user = useState("user", (): null | authResponse => null);
+  const user = useState("user", (): null | AuthResponse => null);
   const loginError = useState("loginError", () => null);
 
   const authenticate = async (email: Ref, password: Ref) => {
     const endpoint = `${config.public.apiBase}/login`;
-    const { data, status, error } = await useFetch<authResponse>(endpoint, {
+    const { data, status, error } = await useFetch<AuthResponse>(endpoint, {
       method: "POST",
       body: {
         email: email.value,
@@ -33,7 +32,7 @@ export const useAuth = defineStore("auth", () => {
   const me = async () => {
     const endpoint = `${config.public.apiBase}/me`;
     const headers = useRequestHeaders(["cookie"]);
-    const { data, status } = await useFetch<authResponse>(endpoint, {
+    const { data, status } = await useFetch<AuthResponse>(endpoint, {
       credentials: "include",
       headers,
     });

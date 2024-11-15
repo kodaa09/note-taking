@@ -1,4 +1,4 @@
-export interface authResponse {
+export interface AuthResponse {
   fullName: string | undefined;
   email: string | undefined;
 }
