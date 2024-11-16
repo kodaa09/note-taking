@@ -10,6 +10,7 @@ const schema = z.object({
 
 type Schema = z.output<typeof schema>
 
+const toast = useToast()
 const authStore = useAuth();
 const useUser = useUsers();
 
@@ -21,19 +22,20 @@ const state = reactive({
 
 async function onAuthForm(event: FormSubmitEvent<Schema>) {
   if (isLoginForm.value) {
-    if (state.email && state.password) {
-      try {
-        await authStore.authenticate(state.email, state.password)
-      } catch (error) {
-        console.log(error)
-      }
+    if (!state.email || !state.password) return
+    try {
+      await authStore.authenticate(state.email, state.password)
+    } catch (error) {
+      showToast("An error has occurred, please try again later")
     }
   } else {
     try {
-      if (state.email && state.password)
-        await useUser.signUp(state.email, state.password)
+      if (!state.email || !state.password) return
+      await useUser.signUp(state.email, state.password)
+      onChangeForm()
+      showToast("Your account has been created successfully")
     } catch (error) {
-      console.log(error)
+      showToast("An error has occurred, please try again later")
     }
   }
 }
@@ -46,6 +48,10 @@ function onChangeForm() {
 function resetForm() {
   state.email = undefined
   state.password = undefined
+}
+
+function showToast(message: string) {
+  toast.add({ title: `${message}` })
 }
 </script>
 

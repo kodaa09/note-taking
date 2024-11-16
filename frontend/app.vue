@@ -1,7 +1,9 @@
 <template>
-  <div class="h-full">
+  <UContainer class="h-full">
     <NuxtPage />
-  </div>
+  </UContainer>
+
+  <UNotifications />
 </template>
 
 <style>

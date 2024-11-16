@@ -13,6 +13,12 @@ export function useUsers() {
       },
       credentials: "include",
     });
+
+    if (status.value === "success") {
+      return data
+    } else {
+      return error
+    }
   }
 
   return {
