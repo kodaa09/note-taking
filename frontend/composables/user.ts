@@ -5,7 +5,7 @@ export function useUsers() {
 
   async function signUp(email: string, password: string) {
     const endpoint = `${config.public.apiBase}/signup`;
-    const { data, status, error } = await useFetch<AuthResponse>(endpoint, {
+    const {data, status, error} = await useFetch<AuthResponse>(endpoint, {
       method: "POST",
       body: {
         email: email,
@@ -14,11 +14,7 @@ export function useUsers() {
       credentials: "include",
     });
 
-    if (status.value === "success") {
-      return data
-    } else {
-      return error
-    }
+    return {data, status, error}
   }
 
   return {

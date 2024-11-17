@@ -11,10 +11,10 @@ const schema = z.object({
 type Schema = z.output<typeof schema>
 
 const toast = useToast()
-const authStore = useAuth();
-const useUser = useUsers();
+const authStore = useAuth()
+const useUser = useUsers()
 
-const isLoginForm = ref(true);
+const isLoginForm = ref(true)
 const state = reactive({
   email: undefined,
   password: undefined
